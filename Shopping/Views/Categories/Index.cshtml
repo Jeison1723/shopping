@@ -1,0 +1,72 @@
+﻿@model IEnumerable<Shopping.Controllers.Data.Entities.Category>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<link rel="stylesheet" href="https://cdn.datables.net/1.10.19/css/jquery.datables.min.css" />
+
+<p>
+    <a asp-action="Create" class="btn btn-outline-warning text-black ">Crear Nueva</a>
+</p>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class=" panel-title">Categorias</h3>
+
+                <div class="panel-body">
+                    <table class="table table-hover table-responsive table-striped" id="Mytable">
+                        <thead>
+                            <tr>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Name)
+                                </th>
+                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Name)
+                                    </td>
+                                    
+                                    <td>
+                                        <a asp-action="Edit" class="btn btn-outline-warning " asp-route-id="@item.Id">Edit</a> |
+                                        <a asp-action="Details" class="btn btn-outline-info " asp-route-id="@item.Id">Details</a> |
+                                        <a asp-action="Delete" class="btn btn-outline-danger " asp-route-id="@item.Id">Delete</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts
+    {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#Mytable').Datatable({
+                "Lenguage": {
+                    "url": "//cdn.datables.net/plug-ins/9dcbecd42ad/i18n/spanish.json"
+                },
+                "aLengthMenu": [
+                    [2, 50, 100, 200, -1],
+                    [5, 50, 100, 200, "Todos"]
+                ]
+            });
+        });
+    </script>
+}

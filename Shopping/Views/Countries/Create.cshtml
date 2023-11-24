@@ -1,0 +1,40 @@
+﻿@model Shopping.Controllers.Data.Entities.Country
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Crear</h1>
+
+<h4>Pais</h4>
+<hr />
+
+
+<div class="row">
+    <div class="col-md-4 offset-4 mx-auto">
+        <form asp-action="Create">
+
+            
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group mt-3">
+                <input type="submit" value="Create" class="btn btn-warning" />
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+
+<div>
+    <a class="btn btn-danger" asp-action="Index"> Back to List</a>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

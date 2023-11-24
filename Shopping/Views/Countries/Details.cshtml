@@ -1,0 +1,32 @@
+﻿@model Shopping.Controllers.Data.Entities.Country
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Country</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.statesnumber)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.statesnumber)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="AddState" class="btn btn-outline-secondary" asp-route-id="@Model?.Id">Agregar Estados</a> |
+    <a asp-action="Edit" class="btn btn-outline-secondary" asp-route-id="@Model?.Id">Edit Pais</a> |
+    <a asp-action="Index" class="btn btn-outline-success">Back to List</a>
+
+</div>
