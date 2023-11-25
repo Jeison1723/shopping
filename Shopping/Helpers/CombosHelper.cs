@@ -27,6 +27,43 @@ namespace Shopping.Helpers
             list.Insert(0, new SelectListItem { Text = "[Seleccione una Categoria...", Value = "0" });
             return list;
         }
+        public async Task<IEnumerable<SelectListItem>> GetComboCitiesAsync(int stateId)
+
+        {
+
+            List<SelectListItem> list = await _context.Cities
+
+                .Where(x => x.State.Id == stateId)
+
+                .Select(x => new SelectListItem
+
+                {
+
+                    Text = x.Name,
+
+                    Value = $"{x.Id}"
+
+                })
+
+                .OrderBy(x => x.Text)
+
+                .ToListAsync();
+
+
+            list.Insert(0, new SelectListItem
+
+            {
+
+                Text = "[Seleccione una ciudad...]",
+
+                Value = "0"
+
+            });
+
+
+            return list;
+
+        }
 
         public async Task<IEnumerable<SelectListItem>> GetComboCountriesAsync()
         {

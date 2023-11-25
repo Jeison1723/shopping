@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Shopping.Controllers.Data;
 using Shopping.Controllers.Data.Entities;
+using Shopping.Controllers.Data.TipoUsuario;
 using Shopping.Models;
 
 namespace Shopping.Helpers
@@ -39,8 +40,9 @@ namespace Shopping.Helpers
                 LastName = model.LastName,
                 ImageId = model.ImageId,
                 PhoneNumber = model.PhoneNumber,
-                
+             
                 UserName = model.Username,
+                City = _context.Cities.FirstOrDefault(),
                 UserType = model.UserType
 
             };
@@ -90,7 +92,9 @@ namespace Shopping.Helpers
 
         public async Task<User> GetUserAsync(string email)
         {
-            return await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+            return await _context.Users
+                .Include(u => u.City)
+                .FirstOrDefaultAsync(u => u.Email == email);
 
          //  .Include(u => u.City)
 

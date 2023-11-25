@@ -77,6 +77,7 @@ namespace Shopping.Controllers
                 Id = Guid.Empty.ToString(),
                 Countries = await _combosHelper.GetComboCountriesAsync(),
                 States = await _combosHelper.GetComboStatesAsync(0),
+                Cities = await _combosHelper.GetComboCitiesAsync(0),
                 UserType = UserType.User,
             };
             return View(model);
@@ -166,8 +167,30 @@ namespace Shopping.Controllers
             return Json(Country.States.OrderBy(d => d.Name));
 
         }
-       
-        
+
+
+        public JsonResult GetCities(int stateId)
+
+        {
+
+            State state = _context.States
+
+                .Include(s => s.Cities)
+
+                .FirstOrDefault(s => s.Id == stateId);
+
+            if (state == null)
+
+            {
+
+                return null;
+
+            }
+
+
+            return Json(state.Cities.OrderBy(c => c.Name));
+
+        }
 
 
 

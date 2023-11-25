@@ -100,7 +100,14 @@ namespace Shopping.Models
 
         public IEnumerable<SelectListItem> States { get; set; }
 
+        [Display(Name = "Ciuadad")]
 
+        [Range(1, int.MaxValue, ErrorMessage = "Debes de seleccionar una ciudad.")]
+
+        public int CityId { get; set; }
+
+
+        public IEnumerable<SelectListItem> Cities { get; set; }
 
     }
 }

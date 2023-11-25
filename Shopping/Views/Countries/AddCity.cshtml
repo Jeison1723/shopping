@@ -1,4 +1,4 @@
-﻿@model Shopping.Models.StateViewMode
+﻿@model Shopping.Models.CityViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -7,15 +7,15 @@
 
 <h1>Crear</h1>
 
-<h4>Estado</h4>
+<h4>Ciudad</h4>
 <hr />
 
 
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="AddState">
-            <input type="hidden" asp-for="CountryId"/>
-            <partial name="_State"/>
+        <form asp-action="AddCity">
+            <input type="hidden" asp-for="StateId" />
+            <partial name="_City" />
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
@@ -23,6 +23,7 @@
             </div>
             <div class="form-group mt-3">
                 <input type="submit" value="Create" class="btn btn-warning" />
+                <a asp-action="DetailsState" asp-route-id ="@Model.StateId" class="btn btn-outline-success " ></a>
             </div>
         </form>
     </div>
@@ -37,5 +38,7 @@
 
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

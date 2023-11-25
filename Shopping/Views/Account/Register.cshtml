@@ -28,8 +28,9 @@
             <input type="hidden" asp-for="Countries" />
 
             <input type="hidden" asp-for="States" />
-
+            <input type="hidden" asp-for="Cities" />
              
+
             <div class="form-group">
 
                 <label asp-for="Username" class="control-label"></label>
@@ -99,13 +100,15 @@
 
             $("#CountryId").change(function () {
 
-                
+
 
                 $("#StateId").empty();
 
                 $("#StateId").append('<option value="0">[Selecciona un departamento/estado...]</option>');
 
-               
+                $("#CityId").empty();
+
+                $("#CityId").append('<option value="0">[Selecciona una ciudad...]</option>');
 
                 $.ajax({
 
@@ -144,6 +147,53 @@
             })        
         });
 
+        $("#StateId").change(function () {
+            $("#CityId").empty();
+            $("#CityId").append('<option value="0">[Selecciona una ciudad...]</option>');
+
+            $.ajax({
+
+                type: 'POST',
+
+                url: '@Url.Action("GetCities")',
+
+                dataType: 'json',
+
+                data: { stateId: $("#StateId").val() },
+
+                success: function (cities) {
+
+                    $.each(cities, function (i, city) {
+
+                        debugger;
+
+                        $("#CityId").append('<option value="'
+
+                            + city.id + '">'
+
+                            + city.name + '</option>');
+
+                    });
+
+                },
+
+                error: function (ex) {
+
+                    alert('Failed to retrieve cities.' + ex);
+
+                }
+
+            });
+
+            return false;
+
+        })
+
+                });
+
     </script>
 
 }
+
+
+    

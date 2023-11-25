@@ -12,6 +12,7 @@ namespace Shopping.Controllers.Data.Entities
         [Required(ErrorMessage = "El campo {0} es Obligatorio.")]
         [RegularExpression(@"^[^\s]+$", ErrorMessage = "No se permiten espacios en blanco.")]
         public string Name { get; set; }
+
         
         public ICollection<State> States { get; set; }
 
