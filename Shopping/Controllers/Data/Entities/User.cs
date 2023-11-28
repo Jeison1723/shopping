@@ -56,26 +56,22 @@ namespace Shopping.Controllers.Data.Entities
 
                 ? $"https://localhost:7172/Images/noimage.jpg"
 
-                : $"https://shoppingp.blob.core.windows.net/users/{ImageId}";
+                : $"https://shoppingzulu.blob.core.windows.net/users/{ImageId}";
 
 
             [Display(Name = "Tipo de usuario")]
 
             public UserType UserType { get; set; }
 
-        [Display(Name = "Ciudad")]
+            [Display(Name = "Ciudad")]
 
-        public City City { get; set; }
+            public City City { get; set; }
 
 
 
-        [Display(Name = "Usuario")]
+            [Display(Name = "Usuario")]
 
             public string FullName => $"{FirstName} {LastName}";
-
-
-
-         
 
         public string FullNameWithDocument => $"{FirstName} {LastName} - {Document}";
 

@@ -11,7 +11,7 @@ namespace Shopping.Controllers.Data.Entities
         [Required(ErrorMessage = "El campo {0} es Obligatorio.")]
         public string Name { get; set; }
 
-
+        public ICollection<ProductCategory> ProductCategories { get; set;}
 
     }   
 }

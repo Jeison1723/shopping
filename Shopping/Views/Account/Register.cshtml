@@ -28,6 +28,7 @@
             <input type="hidden" asp-for="Countries" />
 
             <input type="hidden" asp-for="States" />
+
             <input type="hidden" asp-for="Cities" />
              
 
@@ -89,7 +90,6 @@
 </div>
 
 @section Scripts {
-
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
@@ -100,100 +100,52 @@
 
             $("#CountryId").change(function () {
 
-
-
-                $("#StateId").empty();
+                $("#StateId, #CityId").empty();
 
                 $("#StateId").append('<option value="0">[Selecciona un departamento/estado...]</option>');
-
-                $("#CityId").empty();
-
                 $("#CityId").append('<option value="0">[Selecciona una ciudad...]</option>');
 
                 $.ajax({
-
                     type: 'POST',
-
-                    url: '@Url.Action("GetStates")',
-
+                    url: '@Url.Action("GetStatess")',
                     dataType: 'json',
-
-                    data: { CountryId: $("#CountryId").val() },
-
+                    data: { countryId: $("#CountryId").val() },
                     success: function (states) {
-
                         $.each(states, function (i, state) {
-
-                            $("#StateId").append('<option value="'
-
-                                + state.id + '">'
-
-                                + state.name + '</option>');
-
+                            $("#StateId").append('<option value="' + state.id + '">' + state.name + '</option>');
                         });
-
                     },
-
                     error: function (ex) {
-
-                        alert('Failed to retrieve states.' + ex);
-
+                        console.error('Failed to retrieve states.', ex);
                     }
-
                 });
 
                 return false;
-
-            })        
-        });
-
-        $("#StateId").change(function () {
-            $("#CityId").empty();
-            $("#CityId").append('<option value="0">[Selecciona una ciudad...]</option>');
-
-            $.ajax({
-
-                type: 'POST',
-
-                url: '@Url.Action("GetCities")',
-
-                dataType: 'json',
-
-                data: { stateId: $("#StateId").val() },
-
-                success: function (cities) {
-
-                    $.each(cities, function (i, city) {
-
-                        debugger;
-
-                        $("#CityId").append('<option value="'
-
-                            + city.id + '">'
-
-                            + city.name + '</option>');
-
-                    });
-
-                },
-
-                error: function (ex) {
-
-                    alert('Failed to retrieve cities.' + ex);
-
-                }
-
             });
 
-            return false;
+            $("#StateId").change(function () {
 
-        })
+                $("#CityId").empty();
+                $("#CityId").append('<option value="0">[Selecciona una ciudad...]</option>');
 
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("GetCities")',
+                    dataType: 'json',
+                    data: { stateId: $("#StateId").val() },
+                    success: function (cities) {
+                        $.each(cities, function (i, city) {
+                            $("#CityId").append('<option value="' + city.id + '">' + city.name + '</option>');
+                        });
+                    },
+                    error: function (ex) {
+                        console.error('Failed to retrieve cities.', ex);
+                    }
                 });
 
+                return false;
+            });
+        });
+
     </script>
-
 }
-
-
-    

@@ -42,7 +42,7 @@ namespace Shopping.Helpers
                 PhoneNumber = model.PhoneNumber,
              
                 UserName = model.Username,
-                City = _context.Cities.FirstOrDefault(),
+                City = await _context.Cities.FindAsync(model.CityId),
                 UserType = model.UserType
 
             };

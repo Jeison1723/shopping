@@ -87,8 +87,9 @@ namespace Shopping.Controllers
                 return NotFound();
             }
 
-            var country = await _context.countries
+            var country = await _context.countries         
                 .Include(c => c.States)
+                .ThenInclude(s => s.Cities)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (country == null)
             {
@@ -156,6 +157,26 @@ namespace Shopping.Controllers
                 }
             }
             return View(model);
+        }
+
+
+        public async Task<IActionResult> DetailsStates(int? id)
+        {
+            if (id == null )
+            {
+                return NotFound();
+            }
+
+            var country = await _context.States
+                .Include(s => s.Country)
+                .Include(s => s.Cities)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (country == null)
+            {
+                return NotFound();
+            }
+
+            return View(country);
         }
 
         // GET: Countries/Edit/5
@@ -260,6 +281,7 @@ namespace Shopping.Controllers
             }
 
             State state = await _context.States
+                .Include(s => s.Country)
                 .Include(s => s.Cities)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (state == null)
@@ -308,7 +330,7 @@ namespace Shopping.Controllers
 
                     _context.Add(city);
                     await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(DetailsState), new { Id = model.StateId });
+                    return RedirectToAction(nameof(DetailsStates), new { Id = model.StateId });
                 }
                 catch (DbUpdateException dbUpdateException)
                 {

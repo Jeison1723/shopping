@@ -16,11 +16,9 @@ namespace Shopping.Controllers.Data.Entities
         [Required(ErrorMessage = "El campo {0} es obligatorio.")]
 
         public string Name { get; set; }
-
         [JsonIgnore]
-        public State State
-        {
-            get; set;
-        }    
+        public State State { get; set; }
+      
+        
     }
 }

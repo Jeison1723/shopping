@@ -145,11 +145,11 @@ namespace Shopping.Controllers
             return View(model);
         }
         
-        public JsonResult? GetStates(int CountryId)
+        public JsonResult GetStatess(int CountryId)
 
         {
 
-            Country? Country = _context.countries
+            Country Country = _context.countries
 
                 .Include(c => c.States)
 

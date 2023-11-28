@@ -67,14 +67,14 @@ namespace Shopping.Models
 
         public string ImageFullPath => ImageId == Guid.Empty
 
-            ? $"https://localhost:7057/images/noimage.png"
+            ? $"https://localhost:7172/images/noimage.png"
 
             : $"https://shoppingzulu.blob.core.windows.net/users/{ImageId}";
 
 
         [Display(Name = "Image")]
 
-        public IFormFile ImageFile { get; set; }
+        public IFormFile? ImageFile { get; set; }
 
 
         [Display(Name = "País")]
@@ -89,9 +89,9 @@ namespace Shopping.Models
         public IEnumerable<SelectListItem> Countries { get; set; }
 
 
-        [Display(Name = "Departmento/Estado")]
+        [Display(Name = "Estado")]
 
-        [Range(1, int.MaxValue, ErrorMessage = "Debes de seleccionar un departamento/estado.")]
+        [Range(1, int.MaxValue, ErrorMessage = "Debes de seleccionar estado.")]
 
         [Required(ErrorMessage = "El campo {0} es obligatorio.")]
 
