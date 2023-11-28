@@ -19,6 +19,6 @@ namespace Shopping.Models
 
         [Display(Name = "Foto")]
 
-        public IFormFile? ImageFile { get; set; }
+        public IFormFile ImageFile { get; set; }
     }
 }

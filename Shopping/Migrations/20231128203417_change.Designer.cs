@@ -12,8 +12,8 @@ using Shopping.Controllers.Data;
 namespace Shopping.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20231128151912_DBUntilProducts")]
-    partial class DBUntilProducts
+    [Migration("20231128203417_change")]
+    partial class change
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -315,8 +315,9 @@ namespace Shopping.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<Guid>("ImageId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<byte[]>("Imagefile")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
 
                     b.Property<int>("ProductId")
                         .HasColumnType("int");

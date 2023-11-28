@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Humanizer.Bytes;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Shopping.Controllers.Data;
@@ -14,6 +15,9 @@ namespace Shopping.Controllers
         private readonly DataContext _context;
         private readonly ICombosHelper _combosHelper;
         private readonly IBlobHelper _blobHelper;
+        private Guid Imagefile;
+        private byte[] imagefile;
+
         public ProductsController(DataContext context, ICombosHelper combosHelper, IBlobHelper blobHelper)
 
         {
@@ -54,122 +58,68 @@ namespace Shopping.Controllers
         [ValidateAntiForgeryToken]
 
         public async Task<IActionResult> Create(CreateProductViewModel model)
-
         {
-
             if (ModelState.IsValid)
-
             {
-
-                Guid imageId = Guid.Empty;
-
-                if (model.ImageFile != null)
-
+                // Leer la imagen desde el modelo
+                Byte[] bytesImage;
+                using (var stream = new MemoryStream())
                 {
-
-                    imageId = await _blobHelper.UploadBlobAsync(model.ImageFile, "products");
-
+                    await model.ImageFile.CopyToAsync(stream);
+                    bytesImage = stream.ToArray();
                 }
-
 
                 Product product = new()
-
                 {
-
                     Description = model.Description,
-
                     Name = model.Name,
-
                     Price = model.Price,
-
                     Stock = model.Stock,
-
-                };
-
-
-                product.ProductCategories = new List<ProductCategory>()
-
+                    ProductCategories = new List<ProductCategory>
+            {
+                new ProductCategory
                 {
-
-                     new ProductCategory
-
-                     {
-
-                        category = await _context.Categories.FindAsync(model.CategoryId)
-
-                     }
-
-                };
-
-
-                if (imageId != Guid.Empty)
-
-                {
-
-                    product.ProductImages = new List<ProductImage>()
-
-                    {
-
-                      new ProductImage { ImageId = imageId }
-
-                     };
-
+                    category = await _context.Categories.FindAsync(model.CategoryId)
                 }
-
+            },
+                    ProductImages = new List<ProductImage>
+            {
+                new ProductImage { Imagefile = bytesImage }
+            }
+                };
 
                 try
-
                 {
-
                     _context.Add(product);
-
                     await _context.SaveChangesAsync();
-
                     return RedirectToAction(nameof(Index));
-
                 }
-
                 catch (DbUpdateException dbUpdateException)
-
                 {
-
                     if (dbUpdateException.InnerException.Message.Contains("duplicate"))
-
                     {
-
                         ModelState.AddModelError(string.Empty, "Ya existe un producto con el mismo nombre.");
-
                     }
-
                     else
-
                     {
-
                         ModelState.AddModelError(string.Empty, dbUpdateException.InnerException.Message);
-
                     }
-
                 }
-
                 catch (Exception exception)
-
                 {
-
                     ModelState.AddModelError(string.Empty, exception.Message);
-
                 }
-
             }
 
-
+            // Si llegamos aquí, hay un error de validación, recarga la vista con los datos del modelo y las categorías
             model.Categories = await _combosHelper.GetComboCategoriesAsync();
-
             return View(model);
-
         }
 
-
     }
+
+
+    
 }
 
  

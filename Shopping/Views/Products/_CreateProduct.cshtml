@@ -1,7 +1,7 @@
 ﻿@model Shopping.Models.CreateProductViewModel
 
 
-<div class="row">
+<div class="row" >
 
     <div class="col-md-6">
 
@@ -65,7 +65,7 @@
 
         <div class="form-group">
 
-            <label asp-for="ImageFile" class="control-label"></label>
+            <label asp-for="ImageFile" enctype="multipart/form-data" class="control-label"></label>
 
             <input asp-for="ImageFile" class="form-control" type="file" />
 
