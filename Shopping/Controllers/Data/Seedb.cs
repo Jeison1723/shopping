@@ -32,6 +32,7 @@ namespace Shopping.Controllers.Data
             await _userHelper.CheckRoleAsync(UserType.Admin.ToString());
             await _userHelper.CheckRoleAsync(UserType.User.ToString());
             await CheckUserAsync("1010", "Juan", "Zuluaga", "Jei@yopmail.com", "322 311 4620", "Calle Luna Calle Sol", UserType.Admin);
+
         }
 
         private async Task<User> CheckUserAsync(

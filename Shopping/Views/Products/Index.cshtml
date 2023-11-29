@@ -18,7 +18,7 @@
 </p>
 
 <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-12  ">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h3 class="panel-title">Productos</h3>
@@ -27,6 +27,9 @@
                 <table class="table table-hover table-responsive table-striped" id="MyTable">
                     <thead>
                         <tr>
+                            <th>
+                                COD
+                            </th>
                             <th>
                                 @Html.DisplayNameFor(model => model.Name)
                             </th>
@@ -53,6 +56,9 @@
                         {
                             <tr>
                                 <td>
+                                    @Html.DisplayFor(modelItem => item.Id)
+                                </td>
+                                <td>
                                     @Html.DisplayFor(modelItem => item.Name)
                                 </td>
                                 <td>
@@ -66,16 +72,21 @@
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.CategoriesNumber)
+
                                 </td>
+                                                                
                                 <td>
-                                    @if (item.ProductImages != null && item.ProductImages.Any())
-                                    {
-                                        foreach (var image in item.ProductImages)
+                                        @if (item.ProductImages != null && item.ProductImages.Any())
                                         {
-                                            <img src="data:image/png;base64,@Convert.ToBase64String(image.Imagefile)" alt="Product Image" />
+                                            var firstImage = item.ProductImages.First();
+                                        <img src="data:image/png;base64,@Convert.ToBase64String(firstImage.Imagefile)" width="200" height="200" alt="Product Image" />
                                         }
-                                    }
+                                        else
+                                        {
+                                        <span>Sin imagen</span>
+                                        }
                                 </td>
+                                
                                 <td>
                                     <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-warning"><i class="fa-solid fa-pen-to-square"></i></a>
                                     <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-info"><i class="fa-solid fa-circle-info"></i></a>

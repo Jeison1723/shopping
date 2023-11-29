@@ -1,4 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Shopping.Controllers.Data;
+using Shopping.Controllers.Data.Entities;
 using Shopping.Models;
 using System.Diagnostics;
 
@@ -7,15 +10,79 @@ namespace Shopping.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly DataContext _Context;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, DataContext context)
         {
             _logger = logger;
+            _Context = context;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
+
         {
-            return View();
+
+            List<Product>? products = await _Context.Products
+
+                .Include(p => p.ProductImages)
+
+                .Include(p => p.ProductCategories)
+
+                .OrderBy(p => p.Description)
+
+                .ToListAsync();
+
+            List<ProductHomeViewModel> productsHome = new() { new ProductHomeViewModel() };
+
+            int i = 1;
+
+            foreach (Product? product in products)
+
+            {
+
+                if (i == 1)
+
+                {
+
+                    productsHome.LastOrDefault().Product1 = product;
+
+                }
+
+                if (i == 2)
+
+                {
+
+                    productsHome.LastOrDefault().Product2 = product;
+
+                }
+
+                if (i == 3)
+
+                {
+
+                    productsHome.LastOrDefault().Product3 = product;
+
+                }
+
+                if (i == 4)
+
+                {
+
+                    productsHome.LastOrDefault().Product4 = product;
+
+                    productsHome.Add(new ProductHomeViewModel());
+
+                    i = 0;
+
+                }
+
+                i++;
+
+            }
+
+
+            return View(productsHome);
+
         }
 
         public IActionResult Privacy()
