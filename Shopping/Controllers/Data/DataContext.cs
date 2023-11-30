@@ -30,6 +30,8 @@ namespace Shopping.Controllers.Data
 
         public DbSet<ProductImage> ProductImages { get; set; }
 
+        public DbSet<TemporalSale> TemporalSale { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

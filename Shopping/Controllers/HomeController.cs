@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Shopping.Controllers.Data;
 using Shopping.Controllers.Data.Entities;
+using Shopping.Helpers;
 using Shopping.Models;
 using System.Diagnostics;
 
@@ -11,11 +12,13 @@ namespace Shopping.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly DataContext _Context;
+        private readonly IUserHelper _UserHelper;
 
-        public HomeController(ILogger<HomeController> logger, DataContext context)
+        public HomeController(ILogger<HomeController> logger, DataContext context, IUserHelper userHelper)
         {
             _logger = logger;
             _Context = context;
+            _UserHelper = userHelper;
         }
 
         public async Task<IActionResult> Index()
@@ -79,9 +82,24 @@ namespace Shopping.Controllers
                 i++;
 
             }
+            HomeViewModel model = new() { Products = productsHome };
+
+            User user = await _UserHelper.GetUserAsync(User.Identity.Name);
+
+            if (user != null)
+
+            {
+
+                model.Quantity = await _Context.TemporalSale
+
+                    .Where(ts => ts.user.Id == user.Id)
+
+                    .SumAsync(ts => ts.Quantity);
+
+            }
 
 
-            return View(productsHome);
+            return View(model);
 
         }
 
@@ -103,6 +121,58 @@ namespace Shopping.Controllers
         {
 
             return View();
+
+        }
+
+        public async Task<IActionResult> Add(int? id)
+        {
+            if(id == null)
+            {
+                return NotFound();
+
+            }
+            if(!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            Product product = await _Context.Products.FindAsync(id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+
+            User user = await _UserHelper.GetUserAsync(User.Identity.Name);
+
+            if (user == null)
+
+            {
+
+                return NotFound();
+
+            }
+
+
+            TemporalSale temporalSale = new()
+
+            {
+
+                product = product,
+
+                Quantity = 1,
+
+                user = user
+
+            };
+
+
+            _Context.TemporalSale.Add(temporalSale);
+
+            await _Context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
+
 
         }
     }
